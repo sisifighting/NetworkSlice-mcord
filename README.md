@@ -1,2 +1,2 @@
 # NetworkSlice-mcord
-build network slice system based on opencord
+building network slice system based on opencord
