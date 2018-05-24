@@ -9,10 +9,34 @@
 2. 如何控制虚拟网络资源
 3. 切片特定的额外能力
 4. 怎么控制切片
-## RAN切片
+### RAN切片
 
 1. 虚拟网络资源：TIME-FREQUENCY-SPACE BLOCKS(LTE的资源块)
 2. 控制虚拟网络资源：切片到虚拟资源块的动态映射
-3. 切片可定制能力：
+3. 切片可定制能力：上下行定时切换管理；接入控制策略；频谱利用；双工策略；链路聚合策略；SON策略
+4. 切片管理：资源管理；能力管理；用户管理；流管理
+
+![image](https://github.com/sisifighting/NetworkSlice-mcord/blob/master/image/RANSlice.PNG)
+### 核心网切片
+
+1. 虚拟资源：计算、存储以及运行在上面的VNF
+2. 资源管理：云管理编排
+3. 切片的隔离度：独立还是共享（有的切片之间会共享网元）
+4. 切片控制：核心网切片作为一个服务工作，切片之间通过SDN控制，用户/流管理
+
+![image](https://github.com/sisifighting/NetworkSlice-mcord/blob/master/image/CORE.PNG)
+
+### 传输网切片
+
+1. 虚拟资源：链路、端口、代理、带宽
+2. 资源控制：SDN控制
+3. QoS整形，隔离，安全保障
+4. 网络切片作为服务通过服务操作系统
+
+## 切片架构
+
+
+
+
 
 
