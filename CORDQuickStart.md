@@ -23,4 +23,22 @@
 
 解决方案：安装ruby-bundler后重试，可能是因为网络问题
 
+5. 
+``` 
+<p>Setting up nfs-common (1:1.2.8-9ubuntu12.1) ...
+dpkg: error processing package nfs-common (--configure):
+ subprocess installed post-installation script returned error exit status 10
+dpkg: dependency problems prevent configuration of nfs-kernel-server:
+ nfs-kernel-server depends on nfs-common (= 1:1.2.8-9ubuntu12.1); however:
+  Package nfs-common is not configured yet.
+
+dpkg: error processing package nfs-kernel-server (--configure):
+ dependency problems - leaving unconfigured
+Errors were encountered while processing:
+ nfs-common
+ nfs-kernel-server</p>
+ ```
+ 
+
+
 
