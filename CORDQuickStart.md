@@ -77,9 +77,59 @@ fatal: [localhost]: FAILED! => {
  ansible-playbook -vvv --skip-tags "set_compute_node_password,switch_support,reboot,interface_config" -i ./genconfig/inventory.ini --extra-vars @./genconfig/config.yml ./platform-install/prereqs-check-playbook.yml 2>&1 | tee -a ./logs/prereqs-chec
   ``` 
   
-  是tee命令报的错误，解决方向
+  是tee命令报的错误，没有解决，只好修改LOGCMD 不做重定向
+  
+  7.
+ ```   
+  VAGRANT_CWD=./scenarios/cord/ vagrant up corddev head1 --provider libvirt 2>&1 
+Error while connecting to libvirt: Error making a connection to libvirt URI qemu:///system?no_verify=1&keyfile=/home/zhangsiyu/.ssh/id_rsa:
+Call to virConnectOpen failed: Failed to connect socket to '/var/run/libvirt/libvirt-sock': Permission denied
+ ``` 
+ 修改脚本，在VAGRANT_CWD前加入sudo
+ 8.
+ ```
+ sudo ansible-playbook --skip-tags "set_compute_node_password,switch_support,reboot,interface_config" -i ./genconfig/inventory.ini --extra-vars @./genconfig/config.yml ./platform-install/copy-cord-playbook.yml 2>&1 
+
+PLAY [Include vars] **************************************************************************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************************************************************************
+Wednesday 06 June 2018  15:53:28 +0800 (0:00:00.027)       0:00:00.027 ******** 
+fatal: [head1]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname head1: Name or service not known\r\n", "unreachable": true}
+        to retry, use: --limit @/home/zhangsiyu/cord/build/platform-install/copy-cord-playbook.retry
+
+PLAY RECAP ***********************************************************************************************************************************************
+head1                      : ok=0    changed=0    unreachable=1    failed=0   
+
+Wednesday 06 June 2018  15:53:56 +0800 (0:00:27.514)       0:00:27.541 ******** 
+=============================================================================== 
+Gathering Facts ---------------------------------------------------------------------------------------------------------------------------------- 27.51s
+Makefile:219: recipe for target 'milestones/copy-cord' failed
+make: *** [milestones/copy-cord] Error 4
+
+ ```
+因为出现了问题7，就将所有的命令都改成了sudo
+出现了上述问题，去掉sudo
+ ```
+ ansible-playbook --skip-tags "set_compute_node_password,switch_support,reboot,interface_config" -i ./genconfig/inventory.ini --extra-vars @./genconfig/config.yml ./platform-install/copy-cord-playbook.yml 2>&1
+
+PLAY [Include vars] **************************************************************************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************************************************************************
+Wednesday 06 June 2018  15:58:02 +0800 (0:00:00.026)       0:00:00.026 ******** 
+fatal: [head1]: FAILED! => {"msg": "Cannot write to ControlPath /home/zhangsiyu/.ansible/cp"}
+        to retry, use: --limit @/home/zhangsiyu/cord/build/platform-install/copy-cord-playbook.retry
+
+PLAY RECAP ***********************************************************************************************************************************************
+head1                      : ok=0    changed=0    unreachable=0    failed=1   
+
+Wednesday 06 June 2018  15:58:02 +0800 (0:00:00.181)       0:00:00.208 ******** 
+=============================================================================== 
+Gathering Facts ----------------------------------------------------------------------------------------------------------------------------------- 0.18s
+ ```
+ 解决方案：
+ https://stackoverflow.com/questions/42421774/ansible-permission-problems
  
- 
+ 修改 /home/zhangsiyu/.ansible/cp权限
 
 
 
